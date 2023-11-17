@@ -8,7 +8,7 @@ docker build -t cop .
 ![Alt text](./src/docker_build.png)
 
 ### **2. Start Docker Container**
-Start the Docker container using the following command:
+Start the Docker container using the following command (Before that, DON'T FORGET to change the absolute path of your cop project in the docker_run script.):
 ```
 sh docker_run.sh
 ```
