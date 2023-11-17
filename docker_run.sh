@@ -3,6 +3,6 @@ docker run -itd \
             -p 27017:27017 \
             -p 3000:3000 \
             -w /home/cop\
-            -v /Users/maoyiru/CMU_Y1/practicum/COP_main/cop:/home/cop\
+            -v the absolute path of cop project:/home/cop\
             --name cop cop 
 
