@@ -9,8 +9,9 @@ import urllib
 app = Flask(__name__)
 CORS(app)
 
-uri = "mongodb+srv://cop:" + urllib.parse.quote("Cityofportland@123") + "@cop.9izbbfh.mongodb.net/?retryWrites=true&w=majority"
-cluster = MongoClient(uri)
+# uri = "mongodb+srv://cop:" + urllib.parse.quote("Cityofportland@123") + "@cop.9izbbfh.mongodb.net/?retryWrites=true&w=majority"
+# cluster = MongoClient(uri)
+cluster = MongoClient('localhost', 27017)
 db = cluster["COP"]
 mycol_general = db["General"]
 mycol_award = db["Award"]

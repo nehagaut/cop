@@ -4,16 +4,17 @@ import urllib
 import json
 import sys
 
-uri = "mongodb+srv://cop:" + urllib.parse.quote("Cityofportland@123") + "@cop.9izbbfh.mongodb.net/?retryWrites=true&w=majority"
-cluster = MongoClient(uri)
-db = cluster["COP"]
+# uri = "mongodb+srv://cop:" + urllib.parse.quote("Cityofportland@123") + "@cop.9izbbfh.mongodb.net/?retryWrites=true&w=majority"
+# cluster = MongoClient(uri)
+client = MongoClient('localhost', 27017)
+db = client["COP"]
 mycol_general = db["General"]
 mycol_award = db["Award"]
 mycol_tender = db["Tender"]
 mycol_contract = db["Contract"]
 mycol_party = db["Party"]
 # Create a new client and connect to the server
-client = MongoClient(uri)
+
 
 # Send a ping to confirm a successful connection
 try:

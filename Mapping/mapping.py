@@ -7,10 +7,10 @@ from pymongo import MongoClient
 from pymongo.mongo_client import MongoClient
 import urllib 
 import math
-uri = "mongodb+srv://cop:" + urllib.parse.quote("Cityofportland@123") + "@cop.9izbbfh.mongodb.net/?retryWrites=true&w=majority"
+import warnings
 
-# Create a new client and connect to the server
-cluster = MongoClient(uri)
+warnings.filterwarnings('ignore')
+cluster = MongoClient('localhost', 27017)
 db = cluster["COP"]
 mycol = db["Award"]
 mycol_general = db["General"]
@@ -18,15 +18,9 @@ mycol_tender = db["Tender"]
 mycol_party = db["Party"]
 mycol_contract = db["Contract"]
 mycol_vendor = db["Vendor"]
-# mydb = myclient["admin"]
-# mycol = mydb["Awards"]
-# mycol_general = mydb["General"]
-# mycol_tender = mydb["Tender"]
-# mycol_party = mydb["Party"]
-# mycol_contract = mydb["Contract"]
+
 
 def po_progress_data_transfer(date_string):
-    # datetime.strptime(timestamp_str, "%Y-%m-%d %H:%M:%S.%f")
     date_object = datetime.strptime(date_string,"%Y-%m-%d %H:%M:%S.%f")
     desired_timezone = pytz.timezone("US/Pacific")
     localized_datetime = desired_timezone.localize(date_object.replace(hour=0, minute=0, second=0, microsecond=0))
@@ -171,7 +165,8 @@ def get_tender_json(contract_id, df_byspeed,df_bureau_ref, df_procurement_ref):
         tender_entity_name = matching_row.iloc[0]['Buyer/Name']
         tender_entity_id = matching_row.iloc[0]['Buyer/id']
     else:
-        print("NOTV FOUND")
+        # print("NOTV FOUND")
+        pass
 
     # tender/procurementMethod
     # tender/procurementMethodDetails
@@ -185,7 +180,8 @@ def get_tender_json(contract_id, df_byspeed,df_bureau_ref, df_procurement_ref):
     if not matching_row.empty:
         tender_methodDetail = matching_row.iloc[0][2]
     else:
-        print("NOTV FOUND")
+        # print("NOTV FOUND")
+        pass
 
     if "Construction" in po_type_code:
         tender_category = "works"
@@ -217,7 +213,6 @@ def get_tender_json(contract_id, df_byspeed,df_bureau_ref, df_procurement_ref):
         "contract_id": contract_id,
         "tender": tender
     }
-    print(tender_json)
     mycol_tender.insert_one(tender_json)
     # file_name = "tender.json"
     # # Use a context manager to open the file and write the JSON data
@@ -283,7 +278,6 @@ def get_general_json(contract_id, df_byspeed, df_bureau_ref):
         "contract_id": contract_id,
         "general": general
     }
-    print(general_json)
     # insert it into the database
     mycol_general.insert_one(general_json)
     # print(general)
@@ -426,7 +420,7 @@ def get_party_json(contract_id, df_byspeed, df_sap_contract, df_bureau_ref, df_s
             party2_class3_desc = df_B2G.iloc[0]["Goal Type"]
     else:
         party2_class3_desc = df_B2G.iloc[0]["Goal Type"]
-    print(party2_class3_desc)
+    # print(party2_class3_desc)
     # parties/details/classification/scheme
     party2_class3_scheme = "Certification"
     # print(party2_class3_scheme)
@@ -471,8 +465,8 @@ def get_party_json(contract_id, df_byspeed, df_sap_contract, df_bureau_ref, df_s
         "contract_id": contract_id,
         "parties": parties
     }
-    print(parties_json)
-    # mycol_party.insert_one(parties_json)
+    # print(parties_json)
+    mycol_party.insert_one(parties_json)
 
 def get_json(contract_id):
     df_bureau_ref = pd.read_excel('master contract 30007897.xlsx', sheet_name='Bureau Reference Sheet')
@@ -483,7 +477,7 @@ def get_json(contract_id):
     if not matching_row.empty:
         df_sap_po = pd.DataFrame(matching_row.iloc[0]).T
     else:
-        print("NOT FOUND 1")
+        # print("NOT FOUND 1")
         return
 
     df_sap_contract = pd.read_excel('SAP Contract Listing Report FY2019-23 from PO Listing Report.xlsx')
@@ -491,7 +485,8 @@ def get_json(contract_id):
     if not matching_row.empty:
         df_sap_contract = pd.DataFrame(matching_row.iloc[0]).T
     else:
-        print("NOT FOUND 2")
+        # print("NOT FOUND 2")
+        pass
 
 
     df_byspeed = pd.read_excel('BuySpeed Report.xlsx')
@@ -499,7 +494,8 @@ def get_json(contract_id):
     if not matching_row.empty:
         df_byspeed = pd.DataFrame(matching_row.iloc[0]).T
     else:
-        print("NOT FOUND3")
+        # print("NOT FOUND3")
+        pass
 
     df_B2G = pd.read_excel("B2G Contract Status Report.xlsx") 
     # print(df_B2G)
@@ -507,7 +503,8 @@ def get_json(contract_id):
     if not matching_row.empty:
         df_B2G = pd.DataFrame(matching_row.iloc[0]).T
     else:
-        print("NOT FOUND3")
+        # print("NOT FOUND3")
+        pass
     # print(df_B2G)
     # get_award_json(df_byspeed, df_sap_contract, df_sap_po)
 
@@ -527,7 +524,7 @@ def get_award_json_and_insert_db():
     df_byspeed = pd.read_excel('BuySpeed Report.xlsx')
 
     contract_ids = df_sap_po['Outline agreement'].unique()
-    print(contract_ids)
+    # print(contract_ids)
     
     total_num = len(contract_ids)
     print("total contract_id num:", total_num)
@@ -542,7 +539,7 @@ def get_award_json_and_insert_db():
         if not matching_row.empty:
             df_sap_po_matched = pd.DataFrame(matching_row.iloc[0]).T
         else:
-            print("NOT FOUND 1 for contract_id:", contract_id)
+            # print("NOT FOUND 1 for contract_id:", contract_id)
             continue
 
     
@@ -550,7 +547,7 @@ def get_award_json_and_insert_db():
         if not matching_row.empty:
             df_sap_contract_matched = pd.DataFrame(matching_row.iloc[0]).T
         else:
-            print("NOT FOUND 2 for contract_id:", contract_id)
+            # print("NOT FOUND 2 for contract_id:", contract_id)
             continue
 
     
@@ -558,7 +555,7 @@ def get_award_json_and_insert_db():
         if not matching_row.empty:
             df_byspeed_matched = pd.DataFrame(matching_row.iloc[0]).T
         else:
-            print("NOT FOUND3 for contract_id:", contract_id)
+            # print("NOT FOUND3 for contract_id:", contract_id)
             continue
 
         get_award_json(df_byspeed_matched, df_sap_contract_matched, df_sap_po_matched)
@@ -571,7 +568,7 @@ def get_general_json_and_insert_db():
     df_byspeed = pd.read_excel('BuySpeed Report.xlsx')
 
     contract_ids = df_sap_po['Outline agreement'].unique()
-    print(contract_ids)
+    # print(contract_ids)
     
     total_num = len(contract_ids)
     print("total contract_id num:", total_num)
@@ -586,12 +583,13 @@ def get_general_json_and_insert_db():
         if not matching_row.empty:
             df_byspeed_matched = pd.DataFrame(matching_row.iloc[0]).T
         else:
-            print("NOT FOUND3 for contract_id:", contract_id)
+            # print("NOT FOUND3 for contract_id:", contract_id)
             continue
         try:
             get_general_json(contract_id, df_byspeed_matched, df_bureau_ref)
         except Exception as e:
-            print(f"An error occurred: {e}")
+            pass
+            # print(f"An error occurred: {e}")
 
         if num%100 == 0:
             print(f"Finished: {num} / {total_num}!")
@@ -603,7 +601,7 @@ def get_tender_json_and_insert_db():
     df_byspeed = pd.read_excel('BuySpeed Report.xlsx')
 
     contract_ids = df_sap_po['Outline agreement'].unique()
-    print(contract_ids)
+    # print(contract_ids)
     
     total_num = len(contract_ids)
     print("total contract_id num:", total_num)
@@ -619,12 +617,13 @@ def get_tender_json_and_insert_db():
         if not matching_row.empty:
             df_byspeed_matched = pd.DataFrame(matching_row.iloc[0]).T
         else:
-            print("NOT FOUND3 for contract_id:", contract_id)
+            # print("NOT FOUND3 for contract_id:", contract_id)
             continue
         try:
             get_tender_json(contract_id, df_byspeed_matched,df_bureau_ref, df_procurement_ref)
         except Exception as e:
-            print(f"An error occurred: {e}")
+            # print(f"An error occurred: {e}")
+            pass
 
         if num%100 == 0:
             print(f"Finished: {num} / {total_num}!")
@@ -637,7 +636,7 @@ def get_party_json_and_insert_db():
     df_B2G = pd.read_excel("B2G Contract Status Report.xlsx") 
 
     contract_ids = df_sap_po['Outline agreement'].unique()
-    print(contract_ids)
+    # print(contract_ids)
     
     total_num = len(contract_ids)
     print("total contract_id num:", total_num)
@@ -653,34 +652,35 @@ def get_party_json_and_insert_db():
         if not matching_row.empty:
             df_sap_po_matched = pd.DataFrame(matching_row.iloc[0]).T
         else:
-            print("NOT FOUND 1 for contract_id:", contract_id)
+            # print("NOT FOUND 1 for contract_id:", contract_id)
             continue
 
         matching_row = df_sap_contract.loc[(df_sap_contract['Purchasing Document'] == contract_id) & (df_sap_contract["Item"] == 10)]
         if not matching_row.empty:
             df_sap_contract_matched = pd.DataFrame(matching_row.iloc[0]).T
         else:
-            print("NOT FOUND 2 for contract_id:", contract_id)
+            # print("NOT FOUND 2 for contract_id:", contract_id)
             continue
 
         matching_row = df_byspeed.loc[df_byspeed['Alternate Id'] == str(contract_id)]
         if not matching_row.empty:
             df_byspeed_matched = pd.DataFrame(matching_row.iloc[0]).T
         else:
-            print("NOT FOUND3 for contract_id:", contract_id)
+            # print("NOT FOUND3 for contract_id:", contract_id)
             continue
 
         matching_row = df_B2G.loc[df_B2G['Contract Number'] == str(contract_id)]
         if not matching_row.empty:
             df_B2G_matched = pd.DataFrame(matching_row.iloc[0]).T
         else:
-            print("NOT FOUND4 for contract_id:", contract_id)
+            # print("NOT FOUND4 for contract_id:", contract_id)
             continue
         
         try:
             get_party_json(contract_id, df_byspeed_matched, df_sap_contract_matched, df_bureau_ref, df_sap_po_matched, df_B2G_matched)
         except Exception as e:
-            print(f"An error occurred: {e}")
+            # print(f"An error occurred: {e}")
+            pass
 
         if num%100 == 0:
             print(f"Finished: {num} / {total_num}!")
@@ -691,7 +691,7 @@ def get_contract_json_and_insert_db():
     df_byspeed = pd.read_excel('BuySpeed Report.xlsx')
 
     contract_ids = df_sap_po['Outline agreement'].unique()
-    print(contract_ids)
+    # print(contract_ids)
     
     total_num = len(contract_ids)
     print("total contract_id num:", total_num)
@@ -706,7 +706,7 @@ def get_contract_json_and_insert_db():
         if not matching_row.empty:
             df_sap_po_matched = pd.DataFrame(matching_row.iloc[0]).T
         else:
-            print("NOT FOUND 1 for contract_id:", contract_id)
+            # print("NOT FOUND 1 for contract_id:", contract_id)
             continue
 
     
@@ -714,7 +714,7 @@ def get_contract_json_and_insert_db():
         if not matching_row.empty:
             df_sap_contract_matched = pd.DataFrame(matching_row.iloc[0]).T
         else:
-            print("NOT FOUND 2 for contract_id:", contract_id)
+            # print("NOT FOUND 2 for contract_id:", contract_id)
             continue
 
         get_contract_json(contract_id, df_sap_contract_matched, df_sap_po_matched)
@@ -761,13 +761,25 @@ def create_vendor_directory_in_db():
             "aval": "80%",
             "tags": [contract_status]
         }
-        print(contract_info)
+        # print(contract_info)
         mycol_vendor.insert_one(contract_info)
 
-    
-# get_award_json_and_insert_db()
-# get_general_json_and_insert_db()
-# get_tender_json_and_insert_db()
-# get_party_json_and_insert_db()
-# get_contract_json_and_insert_db()
+
+print("Award ...")
+get_award_json_and_insert_db()
+print("Award Finished")
+print("General ...")
+get_general_json_and_insert_db()
+print("General Finished")
+print("Tender ...")
+get_tender_json_and_insert_db()
+print("Tender Finished")
+print("Party ...")
+get_party_json_and_insert_db()
+print("Party Finished")
+print("Contract ...")
+get_contract_json_and_insert_db()
+print("Contract Finished")
+print("Vendor ...")
 create_vendor_directory_in_db()
+print("Vendor Finished")

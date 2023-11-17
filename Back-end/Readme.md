@@ -1,16 +1,7 @@
-### **City of Portland**  
+### **City of Portland: Designing an Open Contracting Program Back-end**  
 
-#### **Docker Usage for backend**:  
-1. Execute the Dockerfile to build the image:
-```
-docker build -t cop_backend .
-```
-2. Execute the script to run the image:
-```
-sh docker_run.sh
-# Note: need to change the absolute path of your Cop directory
-```
-3. Once inside the container, initiate the backend service.
+
+Once inside the container, initiate the backend service.
 ```
 python3 app.py
 ```
