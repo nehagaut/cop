@@ -172,40 +172,6 @@ def test_connection():
 
 @app.route('/api/all_resource/', methods=['GET'])
 def get_all_resource():
-    # cursor = mycol_party.find()
-    # res_list = []
-    # for data_party in cursor:
-    #     desired_contract_id = data_party["contract_id"]
-    #     data_general = mycol_general.find_one({'contract_id': int(desired_contract_id)})
-    #     data_award = mycol_award.find_one({'contract_id': int(desired_contract_id)})
-        
-    #     if data_general:
-    #         org_name = data_general["general"]["buyer"]["name"]
-    #         # print(org_name)
-    #     else:
-    #         continue
-        
-    #     if data_award:
-    #         vendor_name = data_award["awards"]["suppliers"]["name"]
-    #         contract_status = data_award["awards"]["status"]
-    #     else:
-    #         continue
-        
-    #     if data_party:
-    #         # certification
-    #         certification = data_party["parties"]["party2"]["details"]["classfication3"]["description"]
-    #     else:
-    #         continue
-        
-    #     contract_info = {
-    #         "Vendor Name": vendor_name,
-    #         "Organization Name": org_name,
-    #         "Contract Details": desired_contract_id,
-    #         "Contract Status": contract_status,
-    #         "Certifications": certification,
-    #         "Availability": "80%"
-    #     }
-    #     res_list.append(contract_info)
     documents_list = list(mycol_vendor.find({}, {'_id': 0}))
     # print(documents_list)
     return json.dumps(documents_list, indent=4), 200

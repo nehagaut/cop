@@ -144,6 +144,7 @@ const App = () => {
       title: 'Organization Name',
       dataIndex: 'org',
       key: 'org',
+      ...getColumnSearchProps('org'),
       sorter: (a, b) => a.org.localeCompare(b.org),
       sortDirections: ['ascend', 'descend'],
     },
@@ -304,7 +305,7 @@ const App = () => {
         onCancel={() => setModal1Open(false)}
       >
         <div className="contract-container">
-          <h1>{ContractData["Vendor Name"]}c</h1>
+          <h1>{ContractData["Vendor Name"]}</h1>
           <div className="status-section">
             <span className="status active">ACTIVE</span>
           </div>

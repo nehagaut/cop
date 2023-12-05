@@ -8,13 +8,13 @@ class TestAPI(unittest.TestCase):
 
     def test_get_all_resource(self):
         response = requests.get(f'{self.base_url}/api/all_resource/')
-        print(response.text)
+        # print(response.text)
         self.assertEqual(response.status_code, 200)
 
     def test_get_resource_by_vendor_id(self):
         vendor_id = "104138"  # Replace with a valid resource ID
         response = requests.get(f'{self.base_url}/api/resource/vendor/{vendor_id}')
-        print(response.text)
+        # print(response.text)
         self.assertEqual(response.status_code, 200)
         # Add more assertions to validate the response data as needed
 
@@ -22,7 +22,7 @@ class TestAPI(unittest.TestCase):
     def test_get_resource_by_id(self):
         resource_id = 30006385  # Replace with a valid resource ID
         response = requests.get(f'{self.base_url}/api/resource/{resource_id}')
-        print(response.text)
+        # print(response.text)
         self.assertEqual(response.status_code, 200)
         # Add more assertions to validate the response data as needed
 
