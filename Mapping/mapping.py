@@ -148,7 +148,11 @@ def get_award_json(df_byspeed, df_sap_contract, df_sap_po):
     # print(awards)
     # file_name = "awards.json"
     # insert it into the database
-    mycol.insert_one(awards_json)
+    existing_entry = mycol.find_one({"contract_id": str(awards_id)})
+    if existing_entry is None:
+        mycol.insert_one(awards_json)
+    else:
+        pass
     # print(mycol.insert_one(awards))
     # Use a context manager to open the file and write the JSON data
     # with open(file_name, 'w') as json_file:
@@ -246,7 +250,12 @@ def get_tender_json(contract_id, df_byspeed,df_bureau_ref, df_procurement_ref):
         "tender": tender
     }
     # print(tender_json)
-    mycol_tender.insert_one(tender_json)
+    existing_entry = mycol_tender.find_one({"contract_id": contract_id})
+    if existing_entry is None:
+        mycol_tender.insert_one(tender_json)
+    else:
+        pass
+    
     # file_name = "tender.json"
     # # Use a context manager to open the file and write the JSON data
     # with open(file_name, 'w') as json_file:
@@ -320,7 +329,12 @@ def get_general_json(contract_id, df_byspeed, df_bureau_ref):
         "general": general
     }
     # insert it into the database
-    mycol_general.insert_one(general_json)
+    existing_entry = mycol_general.find_one({"contract_id": contract_id})
+    if existing_entry is None:
+        mycol_general.insert_one(general_json)
+    else:
+        pass
+    
     # print(general_json)
     # file_name = "general.json"
     # # Use a context manager to open the file and write the JSON data
@@ -394,7 +408,11 @@ def get_contract_json(contract_id_input, df_sap_contract, df_sap_po):
         "contracts": contracts
     }
     # print(contract_json)
-    mycol_contract.insert_one(contract_json)
+    existing_entry = mycol_contract.find_one({"contract_id": contract_id_input})
+    if existing_entry is None:
+        mycol_contract.insert_one(contract_json)
+    else:
+        pass
 
 def get_party_json(contract_id, df_byspeed, df_sap_contract, df_bureau_ref, df_sap_po, df_B2G):
     # parties 1
@@ -515,7 +533,12 @@ def get_party_json(contract_id, df_byspeed, df_sap_contract, df_bureau_ref, df_s
         "parties": parties
     }
     # print(parties_json)
-    mycol_party.insert_one(parties_json)
+    existing_entry = mycol_party.find_one({"contract_id": contract_id})
+    if existing_entry is None:
+        mycol_party.insert_one(parties_json)
+    else:
+        pass
+
 
 
 def get_award_json_and_insert_db():

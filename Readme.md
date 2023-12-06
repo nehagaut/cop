@@ -25,7 +25,11 @@ docker exec -it cop /bin/bash
 cd Mapping/
 python3 mapping.py
 ```
+We have provided a config file. In this file, please change the path of the Excel report you want to import to the one you intend to use, making it convenient for you to convert data from different bureaus.
+![Alt text](./src/config.png)
+
 ![Alt text](./src/initiate_db.png)
+
 ### **4. Start back-end server**
 Start the back-end server inside the container:
 ```
